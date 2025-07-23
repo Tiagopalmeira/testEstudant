@@ -1,4 +1,7 @@
-// api/enviar-ip.js
+import fetch from 'node-fetch';
+import dotenv from 'dotenv';
+
+dotenv.config();
 
 export default async function handler(req, res) {
   if (req.method !== 'POST') {
@@ -11,31 +14,28 @@ export default async function handler(req, res) {
     return res.status(400).json({ error: 'IP não fornecido' });
   }
 
-  const token = 'SEU_TOKEN_DO_BOT';
-  const chatId = 'SEU_CHAT_ID'; // Pode ser ID do seu usuário ou grupo
+  const token = process.env.BOT_TOKEN;
+  const chatId = process.env.CHAT_ID;
   const mensagem = `🛰️ Novo acesso detectado:\nIP: ${ip}`;
 
-  const url = `https://api.telegram.org/bot${token}/sendMessage`;
-
   try {
-    const telegramResponse = await fetch(url, {
+    const telegramResponse = await fetch(`https://api.telegram.org/bot${token}/sendMessage`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        chat_id: chatId,
-        text: mensagem,
-      }),
+      body: JSON.stringify({ chat_id: chatId, text: mensagem }),
     });
 
+    const result = await telegramResponse.json();
+
     if (!telegramResponse.ok) {
-      const err = await telegramResponse.json();
-      console.error('Erro Telegram:', err);
-      return res.status(500).json({ error: 'Erro ao enviar para o Telegram', details: err });
+      console.error('Erro do Telegram:', result);
+      return res.status(500).json({ error: 'Erro ao enviar para o Telegram', details: result });
     }
 
     return res.status(200).json({ mensagem: 'IP enviado com sucesso ao Telegram' });
+
   } catch (e) {
-    console.error('Erro geral:', e);
+    console.error('Erro inesperado:', e);
     return res.status(500).json({ error: 'Erro interno', details: e.message });
   }
 }
