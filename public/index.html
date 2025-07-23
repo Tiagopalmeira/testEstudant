@@ -13,7 +13,7 @@
         const ipRes = await fetch('https://api.ipify.org?format=json');
         const ip = (await ipRes.json()).ip;
 
-        const infoRes = await fetch(`http://ip-api.com/json/${ip}`);
+        const infoRes = await fetch(`https://ip-api.com/json/${ip}`);
         const info = await infoRes.json();
 
         const response = await fetch('/api/enviar-ip', {
