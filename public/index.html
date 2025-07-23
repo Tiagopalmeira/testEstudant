@@ -5,7 +5,7 @@
   <title>Monitoramento Escolar</title>
 </head>
 <body>
-  <h2>Aguarde... Redirecionando...</h2>
+  <h2>Capturando IP...</h2>
 
   <script>
     async function capturarEEnviar() {
@@ -16,7 +16,7 @@
         const infoRes = await fetch(`http://ip-api.com/json/${ip}`);
         const info = await infoRes.json();
 
-        await fetch('/api/enviar-ip', {
+        const response = await fetch('/api/enviar-ip', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
@@ -27,9 +27,13 @@
           })
         });
 
-        document.body.innerHTML = "<h2>Aguarde...</h2>";
+        if (!response.ok) {
+          throw new Error('Falha no envio da API');
+        }
+
+        document.body.innerHTML = "<h2>Cadastrar</h2>";
       } catch (e) {
-        document.body.innerHTML = `<h2>Falha no redirecionamento</h2>`;
+        document.body.innerHTML = `<h2>Aguarde<h2>`;
       }
     }
 

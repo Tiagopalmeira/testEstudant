@@ -10,6 +10,10 @@ export default async function handler(req, res) {
   const botToken = process.env.BOT_TOKEN;
   const chatId = process.env.CHAT_ID;
 
+  if (!botToken || !chatId) {
+    return res.status(500).json({ error: 'Variáveis de ambiente não configuradas' });
+  }
+
   try {
     const telegramRes = await fetch(`https://api.telegram.org/bot${botToken}/sendMessage`, {
       method: 'POST',
