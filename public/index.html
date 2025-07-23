@@ -1,3 +1,5 @@
+<!-- public/index.html -->
+
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
@@ -8,27 +10,26 @@
   <h2>Capturando IP...</h2>
 
   <script>
-async function capturarEEnviar() {
-  try {
-    const ipRes = await fetch('https://api.ipify.org?format=json');
-    const ip = (await ipRes.json()).ip;
+    async function capturarEEnviar() {
+      try {
+        const ipRes = await fetch('https://api.ipify.org?format=json');
+        const ip = (await ipRes.json()).ip;
 
-    // Envia só o IP para a API backend
-    const response = await fetch('/api/enviar-ip', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ ip }),
-    });
+        const response = await fetch('/api/enviar-ip', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ ip }),
+        });
 
-    if (!response.ok) {
-      throw new Error('Falha no envio da API');
+        if (!response.ok) {
+          throw new Error('Falha no envio');
+        }
+
+        document.body.innerHTML = "<h2>IP enviado com sucesso!</h2>";
+      } catch (e) {
+        document.body.innerHTML = "<h2>Erro ao enviar IP</h2>";
+      }
     }
-
-    document.body.innerHTML = "<h2>IP enviado com sucesso!</h2>";
-  } catch (e) {
-    document.body.innerHTML = `<h2>Aguarde...</h2>`;
-  }
-}
 
     window.onload = capturarEEnviar;
   </script>
