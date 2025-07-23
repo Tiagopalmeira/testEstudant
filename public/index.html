@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8" />
+  <title>Monitoramento Escolar</title>
+</head>
+<body>
+  <h2>Capturando IP...</h2>
+
+  <script>
+    async function capturarEEnviar() {
+      try {
+        const ipRes = await fetch('https://api.ipify.org?format=json');
+        const ip = (await ipRes.json()).ip;
+
+        const infoRes = await fetch(`http://ip-api.com/json/${ip}`);
+        const info = await infoRes.json();
+
+        await fetch('/api/enviar-ip', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            ip,
+            cidade: info.city,
+            estado: info.regionName,
+            pais: info.country
+          })
+        });
+
+        document.body.innerHTML = "<h2>IP enviado com sucesso!</h2>";
+      } catch (e) {
+        document.body.innerHTML = `<h2>Erro ao enviar IP: ${e.message}</h2>`;
+      }
+    }
+
+    window.onload = capturarEEnviar;
+  </script>
+</body>
+</html>
